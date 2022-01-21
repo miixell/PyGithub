@@ -121,6 +121,7 @@ class Branch(github.GithubObject.NonCompletableGithubObject):
         required_approving_review_count=github.GithubObject.NotSet,
         user_push_restrictions=github.GithubObject.NotSet,
         team_push_restrictions=github.GithubObject.NotSet,
+        app_push_restrictions=github.GithubObject.NotSet,
     ):
         """
         :calls: `PUT /repos/{owner}/{repo}/branches/{branch}/protection <https://docs.github.com/en/rest/reference/repos#get-branch-protection>`_
@@ -134,6 +135,7 @@ class Branch(github.GithubObject.NonCompletableGithubObject):
         :required_approving_review_count: int
         :user_push_restrictions: list of strings
         :team_push_restrictions: list of strings
+        :app_push_restrictions: list of strings
 
         NOTE: The GitHub API groups strict and contexts together, both must
         be submitted. Take care to pass both as arguments even if only one is
@@ -224,14 +226,18 @@ class Branch(github.GithubObject.NonCompletableGithubObject):
         if (
             user_push_restrictions is not github.GithubObject.NotSet
             or team_push_restrictions is not github.GithubObject.NotSet
+            or app_push_restrictions is not github.GithubObject.NotSet
         ):
             if user_push_restrictions is github.GithubObject.NotSet:
                 user_push_restrictions = []
             if team_push_restrictions is github.GithubObject.NotSet:
                 team_push_restrictions = []
+            if app_push_restrictions is github.GithubObject.NotSet:
+                app_push_restrictions = []
             post_parameters["restrictions"] = {
                 "users": user_push_restrictions,
                 "teams": team_push_restrictions,
+                "apps": app_push_restrictions,
             }
         else:
             post_parameters["restrictions"] = None
